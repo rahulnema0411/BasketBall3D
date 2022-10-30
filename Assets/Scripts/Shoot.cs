@@ -13,6 +13,7 @@ public class Shoot : MonoBehaviour {
     private Vector3 mouseButtonUpPosition;
     private bool canShoot = true;
 
+    public bool CanShoot { get => canShoot; set => canShoot = value; }
 
     void Update() {
         if(Input.GetMouseButtonDown(0)) {

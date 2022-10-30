@@ -10,6 +10,7 @@ public class ScoreManager : MonoBehaviour {
     public TextMeshProUGUI scoreText;
     public Transform basketBallPos;
     public GameObject basketBall;
+    public Animator animator;
     
     private int score;
     private float slideValue;
@@ -36,5 +37,10 @@ public class ScoreManager : MonoBehaviour {
 
     public void InstantiateNewBall() {
         Instantiate(basketBall, basketBallPos.position, Quaternion.identity);
+    }
+
+    public void AnimateMenu() {
+        gameObject.SetActive(true);
+        animator.SetTrigger("ShowScoreMenu");
     }
 }
