@@ -1,19 +1,18 @@
+using System.Collections;
 using UnityEngine;
 
 public class ShootHandler : MonoBehaviour {
     [SerializeField] private Projection _projection;
+    [SerializeField] private Ball _ballPrefab;
+    [SerializeField] private float _force = 20;
+    [SerializeField] private Transform _ballSpawn;
+    [SerializeField] private Animator characterAnimator;
 
     private Vector2 initialMouseButtonDownPosition;
 
     private void Update() {
         HandleControls();
     }
-
-    #region Handle Controls
-
-    [SerializeField] private Ball _ballPrefab;
-    [SerializeField] private float _force = 20;
-    [SerializeField] private Transform _ballSpawn;
 
     private void HandleControls() {
 
@@ -29,13 +28,21 @@ public class ShootHandler : MonoBehaviour {
             _projection.SimulateTrajectory(_ballPrefab, _ballSpawn.position, _ballSpawn.forward * _force);
         }
         if (Input.GetMouseButtonUp(0)) {
+            characterAnimator.SetTrigger("Throw");
             _projection.Line.enabled = false;
-            Vector2 finalMousePosition = Input.mousePosition;
-            var spawned = Instantiate(_ballPrefab, _ballSpawn.position, _ballSpawn.rotation);
-            spawned.Init(_ballSpawn.forward * _force, false);
         }
 
     }
 
-    #endregion
+    public void ThrowBall() {
+        var spawned = Instantiate(_ballPrefab, _ballSpawn.position, _ballSpawn.rotation);
+        spawned.Init(_ballSpawn.forward * _force, false);
+        StartCoroutine(SetDribble());
+    }
+
+    private IEnumerator SetDribble() {
+        yield return new WaitForSeconds(1f);
+        transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        characterAnimator.SetTrigger("Dribble");
+    }
 }
