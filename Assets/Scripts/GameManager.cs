@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour {
 
     public Menu menu;
     public ScoreManager scoreManager;
-    public Shoot basketball;
+    public ShootHandler shootHandler;
 
     private void Awake() {
         if(instance == null) {
@@ -15,9 +15,9 @@ public class GameManager : MonoBehaviour {
     }
 
     public void Play() {
+        shootHandler.enabled = true;
         menu.AnimateAndDisable();
         scoreManager.AnimateMenu();
-        basketball.enabled = true;
     }
 
 }
