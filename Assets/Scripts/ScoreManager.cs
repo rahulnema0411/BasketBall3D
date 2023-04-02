@@ -34,11 +34,7 @@ public class ScoreManager : MonoBehaviour {
         score += 1;
         scoreText.text = "Score: " + score.ToString();
     }
-
-    public void InstantiateNewBall() {
-        Instantiate(basketBall, basketBallPos.position, Quaternion.identity);
-    }
-
+    
     public void AnimateMenu() {
         gameObject.SetActive(true);
         animator.SetTrigger("ShowScoreMenu");

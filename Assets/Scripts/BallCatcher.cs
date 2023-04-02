@@ -5,12 +5,7 @@ using UnityEngine;
 public class BallCatcher : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Ball")) {
-            InstantiateNewBallAndDestroyTheOldOne(other);
+            Destroy(other.gameObject);
         }
-    }
-
-    private void InstantiateNewBallAndDestroyTheOldOne(Collider other) {
-        ScoreManager.instance.InstantiateNewBall();
-        Destroy(other.gameObject);
     }
 }
