@@ -9,6 +9,8 @@ public class ShootHandler : MonoBehaviour {
     [SerializeField] private Animator characterAnimator;
 
     private Vector2 initialMouseButtonDownPosition;
+    public Animator CharacterAnimator { get => characterAnimator; set => characterAnimator = value; }
+    
 
     private void Update() {
         HandleControls();
@@ -28,10 +30,16 @@ public class ShootHandler : MonoBehaviour {
             _projection.SimulateTrajectory(_ballPrefab, _ballSpawn.position, _ballSpawn.forward * _force);
         }
         if (Input.GetMouseButtonUp(0)) {
-            characterAnimator.SetTrigger("Throw");
-            _projection.Line.enabled = false;
+            ScoreManager.instance.EnablePowerPanel();
+            this.enabled = false;
         }
 
+    }
+
+    public void DoThrowAnimation() {
+        characterAnimator.SetTrigger("Throw");
+        ScoreManager.instance.DisablePowerPanel();
+        _projection.Line.enabled = false;
     }
 
     public void ThrowBall() {
@@ -44,5 +52,6 @@ public class ShootHandler : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
         characterAnimator.SetTrigger("Dribble");
+        this.enabled = true;
     }
 }

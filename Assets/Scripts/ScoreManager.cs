@@ -11,6 +11,7 @@ public class ScoreManager : MonoBehaviour {
     public Transform basketBallPos;
     public GameObject basketBall;
     public Animator animator;
+    [SerializeField] private GameObject _powerPanel;
     
     private int score;
     private float slideValue;
@@ -38,5 +39,13 @@ public class ScoreManager : MonoBehaviour {
     public void AnimateMenu() {
         gameObject.SetActive(true);
         animator.SetTrigger("ShowScoreMenu");
+    }
+
+    public void EnablePowerPanel() {
+        _powerPanel.SetActive(true);
+    }
+
+    public void DisablePowerPanel() {
+        _powerPanel.SetActive(false);
     }
 }
