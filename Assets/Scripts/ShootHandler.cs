@@ -4,9 +4,11 @@ using UnityEngine;
 public class ShootHandler : MonoBehaviour {
     [SerializeField] private Projection _projection;
     [SerializeField] private Ball _ballPrefab;
-    [SerializeField] private float _force = 20;
+    [SerializeField] private float _forceConstant = 40;
     [SerializeField] private Transform _ballSpawn;
     [SerializeField] private Animator characterAnimator;
+
+    private float _force;
 
     private Vector2 initialMouseButtonDownPosition;
     public Animator CharacterAnimator { get => characterAnimator; set => characterAnimator = value; }
@@ -27,7 +29,7 @@ public class ShootHandler : MonoBehaviour {
             Vector2 diff = currentMousePosition - initialMouseButtonDownPosition;
             Vector2 directionVector = new Vector2(diff.x/Screen.width, diff.y/Screen.height);
             _ballSpawn.localRotation = Quaternion.Euler(-directionVector.y * 90f, directionVector.x * 90f, 0f);
-            _projection.SimulateTrajectory(_ballPrefab, _ballSpawn.position, _ballSpawn.forward * _force);
+            _projection.SimulateTrajectory(_ballPrefab, _ballSpawn.position, _ballSpawn.forward * _forceConstant/2);
         }
         if (Input.GetMouseButtonUp(0)) {
             ScoreManager.instance.EnablePowerPanel();
@@ -37,8 +39,9 @@ public class ShootHandler : MonoBehaviour {
     }
 
     public void DoThrowAnimation() {
+        float forceMultiplier = ScoreManager.instance.DisablePowerPanel();
+        _force = _forceConstant * forceMultiplier;
         characterAnimator.SetTrigger("Throw");
-        ScoreManager.instance.DisablePowerPanel();
         _projection.Line.enabled = false;
     }
 
