@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using System;
 
 public class ScoreManager : MonoBehaviour {
 
@@ -11,6 +13,7 @@ public class ScoreManager : MonoBehaviour {
     public Transform basketBallPos;
     public GameObject basketBall;
     public Animator animator;
+    [SerializeField] private GameObject _powerPanel;
     
     private int score;
     private float slideValue;
@@ -23,6 +26,7 @@ public class ScoreManager : MonoBehaviour {
             instance = this;
         }
         InitiateScore();
+        AnimateSlider();
     }
 
     private void InitiateScore() {
@@ -38,5 +42,21 @@ public class ScoreManager : MonoBehaviour {
     public void AnimateMenu() {
         gameObject.SetActive(true);
         animator.SetTrigger("ShowScoreMenu");
+    }
+
+    public void EnablePowerPanel() {
+        _powerPanel.SetActive(true);
+    }
+
+    private void AnimateSlider() {
+        slider.DOValue(1f, 1f).OnComplete(delegate() {
+            slider.DOValue(0f, 1f).OnComplete(AnimateSlider);
+        });
+    }
+
+    public float DisablePowerPanel() {
+        float sliderVal = slider.value;
+        _powerPanel.SetActive(false);
+        return sliderVal;
     }
 }
